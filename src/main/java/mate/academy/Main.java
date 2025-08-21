@@ -67,7 +67,7 @@ public class Main {
 
         ShoppingCartService shoppingCartService = (ShoppingCartService) instance
                 .getInstance(ShoppingCartService.class);
-        shoppingCartService.registerNewShoppingCart(bob);
+        shoppingCartService.ensureCart(bob);
         shoppingCartService.addSession(tomorrowMovieSession, bob);
         ShoppingCart cart = shoppingCartService.getByUser(bob);
         System.out.println("Cart before clear: " + cart.getTickets());

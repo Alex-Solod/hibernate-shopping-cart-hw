@@ -17,4 +17,9 @@ public interface ShoppingCartService {
     void registerNewShoppingCart(User user);
 
     void clear(ShoppingCart shoppingCart);
+
+    /**
+     * Returns existing cart for the user, or creates a new one and returns it.
+     */
+    ShoppingCart ensureCart(User user);
 }
