@@ -6,17 +6,17 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.ShoppingCartService;
+import mate.academy.service.UserService;
 
 public class Main {
-    private static Injector instance = Injector.getInstance("mate.academy");
-
     public static void main(String[] args) {
-        ShoppingCartService shoppingCartService = (ShoppingCartService) instance
-                .getInstance(ShoppingCartService.class);
+        Injector instance = Injector.getInstance("mate.academy");
 
         MovieService movieService = (MovieService) instance
                 .getInstance(MovieService.class);
@@ -34,6 +34,13 @@ public class Main {
         CinemaHall secondCinemaHall = new CinemaHall();
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
+
+        User bob = new User();
+        bob.setEmail("bob@example.com");
+        bob.setPassword("password");
+
+        UserService userService = (UserService) instance.getInstance(UserService.class);
+        userService.add(bob);
 
         CinemaHallService cinemaHallService = (CinemaHallService) instance
                 .getInstance(CinemaHallService.class);
@@ -57,6 +64,15 @@ public class Main {
                 .getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
+
+        ShoppingCartService shoppingCartService = (ShoppingCartService) instance
+                .getInstance(ShoppingCartService.class);
+        shoppingCartService.registerNewShoppingCart(bob);
+        shoppingCartService.addSession(tomorrowMovieSession, bob);
+        ShoppingCart cart = shoppingCartService.getByUser(bob);
+        System.out.println("Cart before clear: " + cart.getTickets());
+        shoppingCartService.clear(cart);
+        System.out.println("Cart after clear: " + shoppingCartService.getByUser(bob).getTickets());
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(

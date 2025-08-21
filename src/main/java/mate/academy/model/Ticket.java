@@ -62,8 +62,9 @@ public class Ticket {
     @Override
     public String toString() {
         return "Ticket{"
-                + "id=" + id + ", shoppingCart=" + shoppingCart
-                + ", user=" + user
-                + ", movieSession=" + movieSession + '}';
+                + "id=" + id
+                + ", userId=" + (user != null ? user.getId() : null)
+                + ", movieSessionId=" + (movieSession != null ? movieSession.getId() : null)
+                + '}';
     }
 }
